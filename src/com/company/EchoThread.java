@@ -15,15 +15,21 @@ public class EchoThread implements Runnable{
     }
     public void run() {
         //Testing function for the regex for quit.
-        //testRegex();
+        testRegex();
         try(
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        PrintWriter toClient = new PrintWriter(clientSocket.getOutputStream(), true);
+        InputStreamReader fromClient = new InputStreamReader(clientSocket.getInputStream());
         )
         {
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                out.println(inputLine);
+            int inputByte;
+            char inputChar;
+            while ((inputByte = fromClient.read()) != -1) {
+                inputChar = (char) inputByte;
+                //Check char type, if it is uppercase/lowercase english letter,
+                if(isEnglishLetter(inputChar))
+                    toClient.println("Valid char inputted: " + inputChar);
+                //Otherwise dont
+
             }
 
         }
@@ -36,9 +42,23 @@ public class EchoThread implements Runnable{
     public static void testRegex(){
         String[] testStrs = {"quit", "q232uit2", "qekit", "q u i t"};
         System.out.println("Hello world!");
-        for(String i : testStrs ){
-            quitDetector(i);
+       // for(String i : testStrs ){
+        //    quitDetector(i);
+       // }
+        /*System.out.println("Is English letter? a " + isEnglishLetter('a')); //true
+        System.out.println("Is English letter? 8 " + isEnglishLetter('8')); //false
+        System.out.println("Is English letter? A " + isEnglishLetter('A'));//true
+        System.out.println("Is English letter? ! " + isEnglishLetter('!')); //false
+        System.out.println("Is English letter? C " + isEnglishLetter('C')); //true*/
+
+    }
+
+    private static Boolean isEnglishLetter(char inputChar){
+        if (((inputChar >= 'A') && (inputChar <= 'Z')) ||
+                ((inputChar >= 'a') && (inputChar <= 'z'))){
+            return true;
         }
+        return false;
     }
 
     public static Boolean quitDetector(String input){

@@ -11,7 +11,6 @@ public class EchoServer {
             System.exit(1);
         }
 
-
         int portNumber = Integer.parseInt(args[0]);
         System.out.println("Running server");
 
@@ -19,9 +18,9 @@ public class EchoServer {
             {
                 //Accept new client connections
                 while(true){
+                    System.out.println("Client connected!");
                     Thread echoThread = new Thread(new EchoThread(serverSocket.accept()));
                     echoThread.start();
-
                 }
 
         }
