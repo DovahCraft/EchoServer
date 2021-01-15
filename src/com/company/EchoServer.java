@@ -6,28 +6,33 @@ import java.io.*;
 
 public class EchoServer {
     public static void main(String[] args){
-        String[] testStrs = {"quit", "quuit2", "qekit", "q u i t"};
-        System.out.println("Hello world!");
-        for(String i : testStrs ){
-            quitDetector(i);
+        if(args.length != 1){
+            System.err.println("Please supply a port number only to run the server.");
+            System.exit(1);
+        }
+
+
+        int portNumber = Integer.parseInt(args[0]);
+        System.out.println("Running server");
+
+        try(ServerSocket serverSocket = new ServerSocket(portNumber))
+            {
+                //Accept new client connections
+                while(true){
+                    Thread echoThread = new Thread(new EchoThread(serverSocket.accept()));
+                    echoThread.start();
+
+                }
+
+        }
+        catch (IOException e){
+            System.out.println("Error when tyring to listen on port "+ portNumber);
+            System.out.println(e.getMessage());
         }
 
 
 
     }
 
-    public static Boolean quitDetector(String input){
-        String pattern = "q{1}u{1}i{1}t{1}";
 
-        Pattern patternObj = Pattern.compile(pattern);
-
-        Matcher m = patternObj.matcher(input);
-        if(m.find()){
-            System.out.println("Found value: " + m.group(0));
-            return true;
-        }
-        //Otherwise, we didnt match.
-        System.out.println("No match found!");
-        return false;
-    }
 }
