@@ -24,23 +24,23 @@ public class EchoThread implements Runnable {
            clientSocket) {
           //Init Variables
           int inputByte;
-          char inputChar;
+          char charFromClient ;
           int letterIndex = 0;
 
           // While the connection is open and the entire termination sequence hasn't been received
           while (letterIndex < 4 && (inputByte = fromClient.read()) != -1) {
-            inputChar = (char) inputByte;
+            charFromClient  = (char) inputByte;
             //Check char type, if it is uppercase/lowercase english letter,
             // Ignore if not English letter
-            if (isEnglishLetter(inputChar)) {
-              toClient.println(inputChar);
+            if (isEnglishLetter(charFromClient )) {
+              toClient.println(charFromClient );
               // if the letter is in the sequence
-              if (terminationWord.charAt(letterIndex) == inputChar) {
+              if (terminationWord.charAt(letterIndex) == charFromClient ) {
                 letterIndex++; // look for the next letter in the sequence
               }
 
               // if we get 'q', it is the start of a new sequence.
-              else if (terminationWord.charAt(0) == inputChar) {
+              else if (terminationWord.charAt(0) == charFromClient ) {
                 letterIndex = 1; // second letter, look for 'u'
               }
 
@@ -60,10 +60,10 @@ public class EchoThread implements Runnable {
         System.out.println("Connection Closed");
     }
 
-    //Checks if inputChar is valid English char
-    private Boolean isEnglishLetter(char inputChar) {
+    //Checks if charFromClient  is valid English char
+    private Boolean isEnglishLetter(char charFromClient ) {
         //If a valid ASCII character in the English alphabet, return true
-        return ((inputChar >= 'A') && (inputChar <= 'Z')) ||
-                ((inputChar >= 'a') && (inputChar <= 'z'));
+        return ((charFromClient  >= 'A') && (charFromClient  <= 'Z')) ||
+                ((charFromClient  >= 'a') && (charFromClient  <= 'z'));
     }
 }
