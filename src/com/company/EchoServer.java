@@ -26,14 +26,11 @@ public class EchoServer {
                 EchoThread echoThread = new EchoThread(newClient); //Create new EchoThread
                 new Thread(echoThread).start(); // Handles that new client
             }
-        }
-
-        catch (IOException e) {
-            //if problem connecting, notify the user
+        } catch (IOException e) {
+            //If problem connecting, notify the user
             System.out.println("Error when trying to listen on port " + portNumber);
             System.out.println(e.getMessage());
         }
-
 
     }
 
